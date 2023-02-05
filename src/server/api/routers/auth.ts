@@ -1,3 +1,4 @@
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
 import { createTRPCRouter, publicProcedure, protectedProcedure } from "../trpc";
@@ -13,7 +14,20 @@ export const authRouter = createTRPCRouter({
         email: z.string(),
       })
     )
-    .mutation(({ input, ctx }) => {
+    .mutation(async ({ input, ctx }) => {
+      // Check if username exists yet
+      const isUsernameExisted =
+        (await ctx.prisma.user.count({ where: { username: input.username } })) > 0;
+      if (isUsernameExisted) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: JSON.stringify([
+            {
+              message: "Username already existed. Please choose a new username",
+            },
+          ]),
+        });
+      }
       return ctx.prisma.user.create({ data: input });
     }),
 

@@ -1,3 +1,4 @@
+import { TRPCClientError } from "@trpc/client";
 import { GetServerSidePropsContext, InferGetServerSidePropsType, NextPage } from "next";
 import { getCsrfToken, signIn } from "next-auth/react";
 import { useRouter } from "next/router";
@@ -42,16 +43,19 @@ const Register = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSid
       // Redirect to /profile after successful register
       router.push("/profile");
     } catch (err) {
-      console.log("Error during signup", err);
-      if (err instanceof Error) {
+      if (err instanceof TRPCClientError) {
+        setError(JSON.parse(err.message)[0].message);
+      } else if (err instanceof Error) {
         setError(err.message);
+      } else {
+        setError("Unknown error occured");
       }
     }
   };
 
   return (
-    <main className="flex h-full min-h-screen items-center justify-center bg-blue-500 text-white">
-      <form onSubmit={handleSignup} className="-mt-24 grid w-[min(75%,400px)] gap-3">
+    <main className="flex min-h-screen flex-col items-center justify-start bg-blue-500 text-white">
+      <form onSubmit={handleSignup} className="mt-28 grid w-[min(75%,400px)] gap-3 overflow-auto">
         <div className="formGroup grid gap-2">
           <label htmlFor="register-username">Username</label>
           <input
@@ -59,6 +63,7 @@ const Register = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSid
             name="username"
             id="register-username"
             className="rounded-sm px-3 py-1 text-gray-900"
+            required
           />
         </div>
         <div className="formGroup grid gap-2">
@@ -68,6 +73,7 @@ const Register = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSid
             name="password"
             id="register-password"
             className="rounded-sm px-3 py-1 text-gray-900"
+            required
           />
         </div>
         <div className="formGroup grid gap-2">
@@ -77,6 +83,7 @@ const Register = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSid
             name="firstName"
             id="register-fname"
             className="rounded-sm px-3 py-1 text-gray-900"
+            required
           />
         </div>
         <div className="formGroup grid gap-2">
@@ -86,6 +93,7 @@ const Register = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSid
             name="lastName"
             id="register-lname"
             className="rounded-sm px-3 py-1 text-gray-900"
+            required
           />
         </div>
         <div className="formGroup grid">
@@ -95,12 +103,13 @@ const Register = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSid
             name="email"
             id="register-email"
             className="rounded-sm px-3 py-1 text-gray-900"
+            required
           />
         </div>
         <button type="submit" className="mx-auto mt-6 w-min rounded-md bg-blue-800 px-4 py-2">
           Register
         </button>
-        {!!error && <p className="bg-red-400">{error}</p>}
+        {!!error && <p className="rounded-md bg-red-500 p-3 text-center">{error}</p>}
       </form>
     </main>
   );
