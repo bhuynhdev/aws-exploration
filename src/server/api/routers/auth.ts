@@ -18,6 +18,9 @@ export const authRouter = createTRPCRouter({
     }),
 
   getProfile: protectedProcedure.query(({ ctx }) => {
-    return ctx.prisma.user.findFirst({ where: { id: ctx.session.user.id } });
+    return ctx.prisma.user.findFirst({
+      where: { id: ctx.session.user.id },
+      select: { username: true, firstName: true, lastName: true, email: true },
+    });
   }),
 });
