@@ -1,9 +1,13 @@
 import { GetServerSidePropsContext, InferGetServerSidePropsType, NextPage } from "next";
 import { getServerSession } from "next-auth";
 import { getCsrfToken, signIn, signOut } from "next-auth/react";
-import { FormEvent } from "react";
+import { useRouter } from "next/router";
+import { FormEvent, useState } from "react";
 
 const Login: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>> = ({ csrfToken }) => {
+  const [error, setError] = useState("");
+  const router = useRouter();
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = new FormData(e.currentTarget);
@@ -11,35 +15,47 @@ const Login: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>> = 
       username: form.get("username"),
       password: form.get("password"),
     };
-    await signIn("credentials", { ...credentials, callbackUrl: "/profile" });
+    const res = await signIn("credentials", { ...credentials, redirect: false });
+    if (!res) {
+      return setError("Unknown error occured when signin");
+    }
+    if (!res.ok) {
+      if (res.status === 401) {
+        return setError("Invalid username/password");
+      }
+      return setError(res.error || "Unknown error");
+    }
+    // Redirect to "/profile" after successful login
+    return router.push("/profile");
   };
 
   return (
-    <main>
-      <form className="flex w-72 flex-col gap-3 text-white" onSubmit={handleSubmit}>
+    <main className="flex min-h-screen flex-col items-center justify-center bg-blue-500 text-white">
+      <h1 className="mb-10 text-3xl font-bold">Login</h1>
+      <form className="grid w-[min(75%,400px)] gap-3" onSubmit={handleSubmit}>
         <input name="csrfToken" type="hidden" defaultValue={csrfToken} />
-        <div className="formGroup grid">
+        <div className="formGroup grid gap-2">
           <label htmlFor="login-username">Username</label>
           <input
             type="text"
             name="username"
             id="login-username"
             className="rounded-sm px-2 py-1 text-black"
+            required
           />
         </div>
-        <div className="formGroup grid">
+        <div className="formGroup grid gap-2">
           <label htmlFor="login-password">Password</label>
           <input
             type="password"
             name="password"
             id="login-password"
             className="rounded-sm px-2 py-1 text-black"
+            required
           />
         </div>
-        <button>Actual signin</button>
-        <button type="button" onClick={() => void signOut()}>
-          Actual signout
-        </button>
+        <button className="mx-auto mt-6 w-min rounded-md bg-blue-800 px-4 py-2">Login</button>
+        {!!error && <p className="rounded-md bg-red-500 p-3 text-center">{error}</p>}
       </form>
     </main>
   );

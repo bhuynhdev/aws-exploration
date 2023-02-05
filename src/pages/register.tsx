@@ -55,7 +55,7 @@ const Register = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSid
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-start bg-blue-500 text-white">
-      <form onSubmit={handleSignup} className="mt-28 grid w-[min(75%,400px)] gap-3 overflow-auto">
+      <form onSubmit={handleSignup} className="mt-28 grid w-[min(75%,400px)] gap-3">
         <div className="formGroup grid gap-2">
           <label htmlFor="register-username">Username</label>
           <input
