@@ -1,6 +1,7 @@
 import { TRPCClientError } from "@trpc/client";
 import { GetServerSidePropsContext, InferGetServerSidePropsType, NextPage } from "next";
 import { getCsrfToken, signIn } from "next-auth/react";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { FormEvent, useState } from "react";
 import { api } from "../utils/api";
@@ -54,8 +55,16 @@ const Register = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSid
   };
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-start bg-blue-500 text-white">
-      <form onSubmit={handleSignup} className="mt-28 grid w-[min(75%,400px)] gap-3">
+    <main className="flex min-h-screen flex-col items-center justify-center gap-5 bg-gray-800 text-white">
+      <h1 className="text-3xl font-bold">Register</h1>
+      <p>
+        Already have an account?{" "}
+        <Link className="text-blue-500 underline" href="/register">
+          Login
+        </Link>{" "}
+        instead
+      </p>
+      <form onSubmit={handleSignup} className="grid w-[min(75%,400px)] gap-3">
         <div className="formGroup grid gap-2">
           <label htmlFor="register-username">Username</label>
           <input
@@ -106,7 +115,7 @@ const Register = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSid
             required
           />
         </div>
-        <button type="submit" className="mx-auto mt-6 w-min rounded-md bg-blue-800 px-4 py-2">
+        <button type="submit" className="mx-auto mt-6 w-min rounded-md bg-blue-500 px-4 py-2">
           Register
         </button>
         {!!error && <p className="rounded-md bg-red-500 p-3 text-center">{error}</p>}

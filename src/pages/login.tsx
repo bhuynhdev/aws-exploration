@@ -1,6 +1,7 @@
 import { GetServerSidePropsContext, InferGetServerSidePropsType, NextPage } from "next";
 import { getServerSession } from "next-auth";
 import { getCsrfToken, signIn, signOut } from "next-auth/react";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { FormEvent, useState } from "react";
 
@@ -30,8 +31,14 @@ const Login: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>> = 
   };
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-blue-500 text-white">
-      <h1 className="mb-10 text-3xl font-bold">Login</h1>
+    <main className="flex min-h-screen flex-col items-center justify-center gap-5 bg-gray-800 text-white">
+      <h1 className="text-3xl font-bold">Login</h1>
+      <p>
+        New to this site? Head to{" "}
+        <Link className="text-blue-500 underline" href="/register">
+          Register
+        </Link>
+      </p>
       <form className="grid w-[min(75%,400px)] gap-3" onSubmit={handleSubmit}>
         <input name="csrfToken" type="hidden" defaultValue={csrfToken} />
         <div className="formGroup grid gap-2">
@@ -54,7 +61,7 @@ const Login: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>> = 
             required
           />
         </div>
-        <button className="mx-auto mt-6 w-min rounded-md bg-blue-800 px-4 py-2">Login</button>
+        <button className="mx-auto mt-6 w-min rounded-md bg-blue-500 px-4 py-2">Login</button>
         {!!error && <p className="rounded-md bg-red-500 p-3 text-center">{error}</p>}
       </form>
     </main>

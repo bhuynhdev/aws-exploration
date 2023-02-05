@@ -5,6 +5,7 @@ import { SessionProvider } from "next-auth/react";
 import { api } from "../utils/api";
 
 import "../styles/globals.css";
+import Link from "next/link";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -12,8 +13,23 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
   return (
     <SessionProvider session={session}>
-      <Component {...pageProps} />
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
     </SessionProvider>
+  );
+};
+
+const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  return (
+    <>
+      <header className="fixed px-12 py-3">
+        <Link className="text-lg uppercase text-white" href="/">
+          Home page
+        </Link>
+      </header>
+      {children}
+    </>
   );
 };
 
