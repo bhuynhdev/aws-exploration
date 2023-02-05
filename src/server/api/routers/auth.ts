@@ -8,13 +8,16 @@ export const authRouter = createTRPCRouter({
       z.object({
         username: z.string(),
         password: z.string(),
+        firstName: z.string(),
+        lastName: z.string(),
+        email: z.string(),
       })
     )
     .mutation(({ input, ctx }) => {
-      return ctx.prisma.user.create({ data: { username: input.username, password: input.password } });
+      return ctx.prisma.user.create({ data: input });
     }),
 
-  getAll: publicProcedure.query(({ ctx }) => {
-    return ctx.prisma.user.findMany();
+  getProfile: protectedProcedure.query(({ ctx }) => {
+    return ctx.prisma.user.findFirst({ where: { id: ctx.session.user.id } });
   }),
 });

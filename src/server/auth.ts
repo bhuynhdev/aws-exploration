@@ -17,11 +17,11 @@ declare module "next-auth" {
     user: {
       id: string;
       username: string;
-      password: string;
     } & DefaultSession["user"];
   }
 
   interface User {
+    id: string;
     username: string;
     password: string;
   }
@@ -29,6 +29,7 @@ declare module "next-auth" {
 
 declare module "next-auth/jwt" {
   interface JWT {
+    userId: string;
     username: string;
   }
 }
@@ -40,21 +41,17 @@ declare module "next-auth/jwt" {
  * @see https://next-auth.js.org/configuration/options
  **/
 export const authOptions: NextAuthOptions = {
-  pages: {
-    signIn: "/",
-  },
   session: {
     strategy: "jwt",
   },
   callbacks: {
-    jwt({ user, account, token }) {
-      if (user && account) {
-        token.username = user.username;
-      }
+    jwt({ token }) {
       return token;
     },
     session({ session, token }) {
-      session.user.username = token.username;
+      if (session?.user && token.sub) {
+        session.user.id = token.sub;
+      }
       return session;
     },
   },
@@ -91,6 +88,7 @@ export const authOptions: NextAuthOptions = {
         const user = await prisma.user.findFirst({
           where: { username: credentials.username, password: credentials.password },
         });
+        console.log("authorized", user);
         // If no error and we have user data, return it
         // Return null if user data could not be retrieved
         return user ? user : null;
