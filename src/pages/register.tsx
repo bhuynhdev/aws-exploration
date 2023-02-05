@@ -50,30 +50,57 @@ const Register = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSid
   };
 
   return (
-    <main>
-      <form onSubmit={handleSignup}>
-        <div className="formGroup">
+    <main className="flex h-full min-h-screen items-center justify-center bg-blue-500 text-white">
+      <form onSubmit={handleSignup} className="-mt-24 grid w-[min(75%,400px)] gap-3">
+        <div className="formGroup grid gap-2">
           <label htmlFor="register-username">Username</label>
-          <input type="text" name="username" id="register-username" />
+          <input
+            type="text"
+            name="username"
+            id="register-username"
+            className="rounded-sm px-3 py-1 text-gray-900"
+          />
         </div>
-        <div className="formGroup">
+        <div className="formGroup grid gap-2">
           <label htmlFor="register-password">Password</label>
-          <input type="password" name="password" id="register-password" />
+          <input
+            type="password"
+            name="password"
+            id="register-password"
+            className="rounded-sm px-3 py-1 text-gray-900"
+          />
         </div>
-        <div className="formGroup">
+        <div className="formGroup grid gap-2">
           <label htmlFor="register-fname">First name</label>
-          <input type="text" name="firstName" id="register-fname" />
+          <input
+            type="text"
+            name="firstName"
+            id="register-fname"
+            className="rounded-sm px-3 py-1 text-gray-900"
+          />
         </div>
-        <div className="formGroup">
+        <div className="formGroup grid gap-2">
           <label htmlFor="register-lname">Last name</label>
-          <input type="text" name="lastName" id="register-lname" />
+          <input
+            type="text"
+            name="lastName"
+            id="register-lname"
+            className="rounded-sm px-3 py-1 text-gray-900"
+          />
         </div>
-        <div className="formGroup">
+        <div className="formGroup grid">
           <label htmlFor="register-email">Email</label>
-          <input type="email" name="email" id="register-email" />
+          <input
+            type="email"
+            name="email"
+            id="register-email"
+            className="rounded-sm px-3 py-1 text-gray-900"
+          />
         </div>
-        <button type="submit">Register</button>
-        <p className="bg-red-400">{error}</p>
+        <button type="submit" className="mx-auto mt-6 w-min rounded-md bg-blue-800 px-4 py-2">
+          Register
+        </button>
+        {!!error && <p className="bg-red-400">{error}</p>}
       </form>
     </main>
   );
