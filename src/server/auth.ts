@@ -94,7 +94,6 @@ export const authOptions: NextAuthOptions = {
         const user = await prisma.user.findFirst({
           where: { username: credentials.username, password: credentials.password },
         });
-        console.log("authorized", user);
         // If no error and we have user data, return it
         // Return null if user data could not be retrieved
         return user ? user : null;
