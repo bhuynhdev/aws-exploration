@@ -1,6 +1,6 @@
 import { GetServerSidePropsContext, InferGetServerSidePropsType, NextPage } from "next";
 import { getServerSession } from "next-auth";
-import { getCsrfToken, signIn, signOut } from "next-auth/react";
+import { getCsrfToken, signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { FormEvent, useState } from "react";
@@ -39,7 +39,7 @@ const Login: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>> = 
           Register
         </Link>
       </p>
-      <form className="grid w-[min(75%,400px)] gap-3" onSubmit={handleSubmit}>
+      <form className="grid w-[min(75%,400px)] gap-3" onSubmit={(e) => void handleSubmit(e)}>
         <input name="csrfToken" type="hidden" defaultValue={csrfToken} />
         <div className="formGroup grid gap-2">
           <label htmlFor="login-username">Username</label>

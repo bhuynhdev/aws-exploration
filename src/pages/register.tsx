@@ -1,12 +1,15 @@
 import { TRPCClientError } from "@trpc/client";
-import { GetServerSidePropsContext, InferGetServerSidePropsType, NextPage } from "next";
-import { getCsrfToken, signIn } from "next-auth/react";
+import type { GetServerSidePropsContext, InferGetServerSidePropsType, NextPage } from "next";
+import { getCsrfToken } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { FormEvent, useState } from "react";
+import React, { type FormEvent, useState } from "react";
+import type { ZodIssue } from "zod";
 import { api } from "../utils/api";
 
-const Register = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const Register: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
+  csrfToken,
+}) => {
   const signUp = api.auth.signUp.useMutation();
   const router = useRouter();
   const [error, setError] = useState("");
@@ -42,15 +45,23 @@ const Register = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSid
         body: JSON.stringify({ username: user.username, password, csrfToken }),
       });
       // Redirect to /profile after successful register
-      router.push("/profile");
+      return router.push("/profile");
     } catch (err) {
       if (err instanceof TRPCClientError) {
-        setError(JSON.parse(err.message)[0].message);
-      } else if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError("Unknown error occured");
+        try {
+          const message: unknown = JSON.parse(err.message);
+          if (Array.isArray(message) && message.length > 0) {
+            return setError((message[0] as ZodIssue).message);
+          }
+          return setError(err.message);
+        } catch (jsonParseError) {
+          return setError(err.message);
+        }
       }
+      if (err instanceof Error) {
+        return setError(err.message);
+      }
+      return setError("Unknown error occured");
     }
   };
 
@@ -64,7 +75,7 @@ const Register = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSid
         </Link>{" "}
         instead
       </p>
-      <form onSubmit={handleSignup} className="grid w-[min(75%,400px)] gap-3">
+      <form onSubmit={(e) => void handleSignup(e)} className="grid w-[min(75%,400px)] gap-3">
         <div className="formGroup grid gap-2">
           <label htmlFor="register-username">Username</label>
           <input

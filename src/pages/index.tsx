@@ -1,4 +1,4 @@
-import { GetServerSideProps, InferGetServerSidePropsType, type NextPage } from "next";
+import type { GetServerSideProps, InferGetServerSidePropsType, NextPage } from "next";
 import { getServerSession } from "next-auth";
 import { signOut } from "next-auth/react";
 import Head from "next/head";
@@ -8,7 +8,7 @@ const Home: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>> = (
   return (
     <>
       <Head>
-        <title>Bao Huynh's app</title>
+        <title>Bao Huynh&apos;s app</title>
         <meta name="description" content="An app to deploy on AWS" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -19,7 +19,7 @@ const Home: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>> = (
         {userId ? (
           <div className="text-lg">
             <p>
-              You're currently logged in as userID: <code>{userId}</code>
+              You&apos;re currently logged in as userID: <code>{userId}</code>
             </p>
             <p>
               See your profile{" "}
@@ -29,7 +29,7 @@ const Home: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>> = (
             </p>
             <button
               className="my-8 rounded-md bg-blue-500 px-4 py-2 text-lg text-white"
-              onClick={() => signOut({ callbackUrl: "/" })}
+              onClick={() => void signOut({ callbackUrl: "/" })}
             >
               Sign Out
             </button>
