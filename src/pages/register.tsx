@@ -70,7 +70,7 @@ const Register: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>>
       <h1 className="text-3xl font-bold">Register</h1>
       <p>
         Already have an account?{" "}
-        <Link className="text-blue-500 underline" href="/register">
+        <Link className="text-blue-500 underline" href="/login">
           Login
         </Link>{" "}
         instead
