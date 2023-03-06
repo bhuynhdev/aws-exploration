@@ -1,7 +1,7 @@
 import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from "next";
 import { getServerSession } from "next-auth/next";
 import { signOut } from "next-auth/react";
-import { api } from "../utils/api";
+import { api } from "../../utils/api";
 
 const Profile: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>> = ({ user }) => {
   // Run the query only when a user has looged in

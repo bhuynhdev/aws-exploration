@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { type FormEvent, useState } from "react";
 import type { ZodIssue } from "zod";
-import { api } from "../utils/api";
+import { api } from "../../utils/api";
 
 const Register: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
   csrfToken,
@@ -70,7 +70,7 @@ const Register: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>>
       <h1 className="text-3xl font-bold">Register</h1>
       <p>
         Already have an account?{" "}
-        <Link className="text-blue-500 underline" href="/login">
+        <Link className="text-blue-500 underline" href="./login">
           Login
         </Link>{" "}
         instead

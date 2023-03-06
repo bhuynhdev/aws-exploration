@@ -45,7 +45,7 @@ declare module "next-auth/jwt" {
  **/
 export const authOptions: NextAuthOptions = {
   pages: {
-    signIn: "/login",
+    signIn: "/aws/login",
   },
   session: {
     strategy: "jwt",

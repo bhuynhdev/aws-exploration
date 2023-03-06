@@ -3,8 +3,10 @@ import { getServerSession } from "next-auth";
 import { signOut } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 const Home: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>> = ({ userId }) => {
+  const { asPath } = useRouter();
   return (
     <>
       <Head>
@@ -14,7 +16,7 @@ const Home: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>> = (
       </Head>
       <main className="flex min-h-screen flex-col items-center justify-center gap-10 bg-gray-800 text-white">
         <h1 className="text-5xl font-extrabold tracking-tight sm:text-6xl">
-          Bao Huynh - Cloud computing
+          Bao Huynh - Cloud computing - AWS
         </h1>
         {userId ? (
           <div className="text-lg">
@@ -23,13 +25,13 @@ const Home: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>> = (
             </p>
             <p>
               See your profile{" "}
-              <Link href="/profile" className="text-blue-500 underline">
+              <Link href={`${asPath}/profile`} className="text-blue-500 underline">
                 here
               </Link>{" "}
             </p>
             <button
               className="my-8 rounded-md bg-blue-500 px-4 py-2 text-lg text-white"
-              onClick={() => void signOut({ callbackUrl: "/" })}
+              onClick={() => void signOut({ callbackUrl: "/aws" })}
             >
               Sign Out
             </button>
@@ -37,13 +39,13 @@ const Home: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>> = (
         ) : (
           <div className="container flex flex-col items-center justify-center gap-6 px-4 py-16 ">
             <Link
-              href="/login"
+              href={`${asPath}/login`}
               className="w-24 rounded-md bg-blue-500 py-2 text-center text-lg text-white"
             >
               Login
             </Link>
             <Link
-              href="/register"
+              href={`${asPath}/register`}
               className="w-24 rounded-md bg-blue-500 py-2 text-center text-lg text-white"
             >
               Register

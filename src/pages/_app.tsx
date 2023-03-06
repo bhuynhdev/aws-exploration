@@ -23,11 +23,11 @@ const MyApp: AppType<{ session: Session | null }> = ({
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <>
-      <header className="fixed px-12 py-3">
+      {/* <header className="fixed px-12 py-3">
         <Link className="text-lg uppercase text-white" href="/">
           Home page
         </Link>
-      </header>
+      </header> */}
       {children}
     </>
   );

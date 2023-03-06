@@ -27,7 +27,7 @@ const Login: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>> = 
       return setError(res.error || "Unknown error");
     }
     // Redirect to "/profile" after successful login
-    return router.push("/profile");
+    return router.push("./profile");
   };
 
   return (
@@ -35,7 +35,7 @@ const Login: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>> = 
       <h1 className="text-3xl font-bold">Login</h1>
       <p>
         New to this site? Head to{" "}
-        <Link className="text-blue-500 underline" href="/register">
+        <Link className="text-blue-500 underline" href="./register">
           Register
         </Link>
       </p>
