@@ -5,7 +5,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-const Home: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>> = ({ userId }) => {
+const AWSHome: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>> = ({ userId }) => {
   const { asPath } = useRouter();
   return (
     <>
@@ -57,7 +57,7 @@ const Home: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>> = (
   );
 };
 
-export default Home;
+export default AWSHome;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getServerSession(context.req, context.res, {
